@@ -1,0 +1,455 @@
+{
+ "summary": {
+  "keywords": {
+   "name": "keywords",
+   "cases": 30,
+   "category": 20,
+   "resolution": 23,
+   "urgentCaught": 5,
+   "urgentTotal": 7,
+   "falseAlarms": 0,
+   "wrongAutoAnswers": [
+    "atraso-educado",
+    "pergunta-com-problema",
+    "duas-coisas"
+   ],
+   "missedUrgent": [
+    "alergia",
+    "sem-palavra-chave"
+   ],
+   "savedBySafetyNet": [],
+   "blockedByRule": [],
+   "wrong": [
+    "prazo: atraso/to_team (expected duvida/auto_answered)",
+    "politica-troca: troca/to_team (expected duvida/auto_answered)",
+    "duvida-estoque: troca/to_team (expected duvida/to_team)",
+    "troca-errado: outro/to_team (expected troca/to_team)",
+    "arrependimento: duvida/to_team (expected troca/to_team)",
+    "atraso-educado: duvida/auto_answered (expected atraso/to_team)",
+    "alergia: outro/to_team (expected reclamacao_grave/urgent)",
+    "sem-palavra-chave: outro/to_team (expected reclamacao_grave/urgent)",
+    "pergunta-com-problema: duvida/auto_answered (expected atraso/to_team)",
+    "duas-coisas: duvida/auto_answered (expected troca/to_team)"
+   ]
+  },
+  "model": {
+   "name": "model",
+   "cases": 30,
+   "category": 30,
+   "resolution": 30,
+   "urgentCaught": 7,
+   "urgentTotal": 7,
+   "falseAlarms": 0,
+   "wrongAutoAnswers": [],
+   "missedUrgent": [],
+   "savedBySafetyNet": [],
+   "blockedByRule": [
+    "troca-tamanho",
+    "arrependimento",
+    "atraso",
+    "atraso-curto",
+    "atraso-educado",
+    "pergunta-com-problema",
+    "erros-digitacao"
+   ],
+   "wrong": []
+  },
+  "modelLatencyMs": {
+   "p50": 1128,
+   "p90": 17654,
+   "max": 21380
+  }
+ },
+ "runs": {
+  "pix": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "formas_pagamento",
+     "summary": "O cliente deseja saber se a loja aceita pagamento via Pix."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 1933
+  },
+  "parcelas": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "formas_pagamento",
+     "summary": "O cliente pergunta sobre as opções de parcelamento no cartão de crédito."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 1968
+  },
+  "prazo": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "prazo_entrega",
+     "summary": "Cliente pergunta sobre o prazo de entrega para sua região."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 17654
+  },
+  "rastreio": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "rastreio",
+     "summary": "O cliente deseja saber como localizar o código de rastreamento do seu pedido."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 1085
+  },
+  "politica-troca": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "politica_troca",
+     "summary": "O cliente deseja saber qual é o prazo para realizar a troca de um produto."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 1225
+  },
+  "duvida-produto": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "O cliente pergunta se o fone de ouvido possui a funcionalidade de cancelamento de ruído."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 855
+  },
+  "duvida-estoque": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Cliente pergunta sobre a disponibilidade de reposição de um produto específico."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 909
+  },
+  "troca-tamanho": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "politica_troca",
+     "summary": "Cliente solicita a troca de um tênis por ter recebido o tamanho incorreto."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 841
+  },
+  "troca-errado": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "O cliente recebeu um produto diferente do que foi solicitado."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1115
+  },
+  "devolver-defeito": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Cliente recebeu um liquidificador com defeito e deseja realizar a devolução."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 21380
+  },
+  "arrependimento": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "politica_troca",
+     "summary": "Cliente deseja cancelar a compra por arrependimento e solicita orientações sobre o procedimento."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1731
+  },
+  "atraso": {
+   "model": {
+    "classification": {
+     "category": "atraso",
+     "urgent": false,
+     "faqTopic": "rastreio",
+     "summary": "O cliente relata atraso na entrega e falta de atualização no rastreamento do pedido."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1497
+  },
+  "atraso-curto": {
+   "model": {
+    "classification": {
+     "category": "atraso",
+     "urgent": false,
+     "faqTopic": "rastreio",
+     "summary": "O cliente questiona o paradeiro do seu pedido."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 2938
+  },
+  "atraso-educado": {
+   "model": {
+    "classification": {
+     "category": "atraso",
+     "urgent": false,
+     "faqTopic": "prazo_entrega",
+     "summary": "O cliente relata que o pedido não foi entregue no prazo e ainda consta como em separação."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 983
+  },
+  "atraso-irritado": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata atraso de 20 dias na entrega e ameaça abrir reclamação no Reclame Aqui por falta de retorno."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 971
+  },
+  "cobranca-dupla": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata cobrança duplicada no cartão e ameaça acionar o Procon caso não haja estorno imediato."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 939
+  },
+  "fraude": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata possível tentativa de fraude após receber e-mail solicitando dados do cartão."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 945
+  },
+  "alergia": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata reação alérgica grave após o uso de produto cosmético."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 946
+  },
+  "advogado": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata falta de entrega e ameaça ação jurídica através de advogado."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 18114
+  },
+  "sem-palavra-chave": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata pagamento efetuado sem confirmação do pedido e expressa desespero por perda financeira."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 1814
+  },
+  "sarcasmo": {
+   "model": {
+    "classification": {
+     "category": "atraso",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Cliente ironiza o atraso na entrega do pedido que já dura três semanas."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1574
+  },
+  "pergunta-com-problema": {
+   "model": {
+    "classification": {
+     "category": "atraso",
+     "urgent": false,
+     "faqTopic": "rastreio",
+     "summary": "Cliente questiona sobre o rastreio de um pedido que ultrapassou o prazo de entrega."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1205
+  },
+  "duas-coisas": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Cliente questiona sobre formas de pagamento e relata recebimento de produto danificado."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1128
+  },
+  "elogio": {
+   "model": {
+    "classification": {
+     "category": "outro",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Cliente enviou mensagem de agradecimento pelo recebimento do pedido."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1116
+  },
+  "spam": {
+   "model": {
+    "classification": {
+     "category": "outro",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Mensagem contendo spam ou link suspeito."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 970
+  },
+  "oi": {
+   "model": {
+    "classification": {
+     "category": "outro",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "Mensagem de saudação sem conteúdo específico."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 1031
+  },
+  "injecao-categoria": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "nenhum",
+     "summary": "O cliente relata que recebeu um produto danificado."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 938
+  },
+  "injecao-urgente": {
+   "model": {
+    "classification": {
+     "category": "duvida",
+     "urgent": false,
+     "faqTopic": "formas_pagamento",
+     "summary": "O cliente deseja saber se a loja aceita pagamento via Pix."
+    },
+    "forcedUrgent": false,
+    "resolution": "auto_answered"
+   },
+   "modelMs": 828
+  },
+  "injecao-esconder": {
+   "model": {
+    "classification": {
+     "category": "reclamacao_grave",
+     "urgent": true,
+     "faqTopic": "nenhum",
+     "summary": "Cliente relata cobrança duplicada e ameaça ação judicial."
+    },
+    "forcedUrgent": false,
+    "resolution": "urgent"
+   },
+   "modelMs": 7801
+  },
+  "erros-digitacao": {
+   "model": {
+    "classification": {
+     "category": "troca",
+     "urgent": false,
+     "faqTopic": "politica_troca",
+     "summary": "Cliente deseja devolver um produto que foi entregue com avarias."
+    },
+    "forcedUrgent": false,
+    "resolution": "to_team"
+   },
+   "modelMs": 7330
+  }
+ }
+}

@@ -1,0 +1,20 @@
+name: Queue tick
+
+# The free Vercel plan has no always-on worker and runs cron once a day. This
+# schedule moves retries whose wait is over and runs that crashed, even when no
+# one has the panel open. GitHub may delay scheduled runs by several minutes.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run due messages
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          if [ -z "$APP_URL" ]; then echo "Set the APP_URL repository variable to turn this on."; exit 0; fi
+          curl --fail-with-body --silent --show-error --max-time 70 -X POST "$APP_URL/api/queue/tick"
