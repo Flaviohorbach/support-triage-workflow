@@ -4,6 +4,8 @@ Customer messages arrive by Telegram or a web form, a model labels them, and cod
 
 Project 9 of a 12-project AI engineering track focused on front-end. Built twice: in TypeScript, live and tested, and as an [n8n workflow](n8n/), to compare the two. The interface is in Portuguese. The store is fictional.
 
+**[Live demo](https://support-triage-workflow.vercel.app)** · Telegram bot: [@TriagemLojaDemo_bot](https://t.me/TriagemLojaDemo_bot)
+
 ## How a message flows
 
 ```mermaid
