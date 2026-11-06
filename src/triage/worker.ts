@@ -65,7 +65,9 @@ async function runStep(deps: WorkerDeps, message: MessageRow, plan: Plan, step: 
     }
     case "alert": {
       const cardUrl = (done.get("card")?.url as string | null | undefined) ?? null;
-      const text = `Urgente · protocolo ${protocolOf(message.id)}\n${plan.card!.title}${cardUrl ? `\n${cardUrl}` : ""}`;
+      // The first line already says it is urgent; the card title says it again for the board.
+      const subject = plan.card!.title.replace(/^URGENTE · /, "");
+      const text = `Urgente · protocolo ${protocolOf(message.id)}\n${subject[0]!.toUpperCase()}${subject.slice(1)}${cardUrl ? `\n${cardUrl}` : ""}`;
       if (!deps.opsChatId) return { simulated: true, text };
       const sent = await deps.telegram.send(deps.opsChatId, text);
       return { simulated: sent.simulated, text };
