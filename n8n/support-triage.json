@@ -1,0 +1,149 @@
+{
+  "id": "triageMain000001",
+  "name": "Support triage (n8n version)",
+  "nodes": [
+    {
+      "id": "6f1c1a40-0001-4c4e-9b1a-000000000001",
+      "name": "Customer message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 300],
+      "webhookId": "5b1e8c2a-7d3f-4a51-9c6e-2f0d4b8a9e11",
+      "parameters": { "httpMethod": "POST", "path": "triage", "responseMode": "responseNode", "options": {} }
+    },
+    {
+      "id": "6f1c1a40-0002-4c4e-9b1a-000000000002",
+      "name": "Classify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 300],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.APP_URL }}/api/classify",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "=Bearer {{ $env.CLASSIFY_TOKEN }}" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ id: $execution.id, text: $json.body.text }) }}",
+        "options": { "timeout": 30000 }
+      }
+    },
+    {
+      "id": "6f1c1a40-0003-4c4e-9b1a-000000000003",
+      "name": "Needs a card?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [480, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.plan.card !== null }}",
+              "rightValue": "",
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6f1c1a40-0004-4c4e-9b1a-000000000004",
+      "name": "Trello card",
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [720, 200],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "parameters": {
+        "resource": "card",
+        "operation": "create",
+        "listId": "={{ $env.TRELLO_LIST_ID }}",
+        "name": "={{ $('Classify').item.json.plan.card.title }}",
+        "description": "=Mensagem do cliente:\n{{ $('Customer message').item.json.body.text }}\n\nCriado pela versão n8n · execução {{ $execution.id }}",
+        "additionalFields": { "pos": "={{ $('Classify').item.json.plan.card.urgent ? 'top' : 'bottom' }}" }
+      },
+      "credentials": { "trelloApi": { "id": "trelloDemoCred01", "name": "Trello" } }
+    },
+    {
+      "id": "6f1c1a40-0005-4c4e-9b1a-000000000005",
+      "name": "Urgent?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [960, 200],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $('Classify').item.json.plan.resolution === 'urgent' }}",
+              "rightValue": "",
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6f1c1a40-0006-4c4e-9b1a-000000000006",
+      "name": "Alert the team",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1200, 100],
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $env.TELEGRAM_OPS_CHAT_ID }}",
+        "text": "=Urgente (versão n8n)\n{{ $('Classify').item.json.plan.card.title }}\n{{ $('Trello card').item.json.shortUrl }}",
+        "additionalFields": { "appendAttribution": false }
+      },
+      "credentials": { "telegramApi": { "id": "telegramDemo0001", "name": "Telegram" } }
+    },
+    {
+      "id": "6f1c1a40-0007-4c4e-9b1a-000000000007",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1440, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ reply: $('Classify').item.json.plan.reply, resolution: $('Classify').item.json.plan.resolution, method: $('Classify').item.json.method }) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Customer message": { "main": [[{ "node": "Classify", "type": "main", "index": 0 }]] },
+    "Classify": { "main": [[{ "node": "Needs a card?", "type": "main", "index": 0 }]] },
+    "Needs a card?": {
+      "main": [
+        [{ "node": "Trello card", "type": "main", "index": 0 }],
+        [{ "node": "Reply", "type": "main", "index": 0 }]
+      ]
+    },
+    "Trello card": { "main": [[{ "node": "Urgent?", "type": "main", "index": 0 }]] },
+    "Urgent?": {
+      "main": [
+        [{ "node": "Alert the team", "type": "main", "index": 0 }],
+        [{ "node": "Reply", "type": "main", "index": 0 }]
+      ]
+    },
+    "Alert the team": { "main": [[{ "node": "Reply", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "errorWorkflow": "triageErrors0001" },
+  "pinData": {},
+  "active": false
+}

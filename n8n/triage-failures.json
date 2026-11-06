@@ -1,0 +1,35 @@
+{
+  "id": "triageErrors0001",
+  "name": "Support triage failures (n8n version)",
+  "nodes": [
+    {
+      "id": "7a2d2b50-0001-4d5f-8c2b-000000000001",
+      "name": "A triage run failed",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [0, 300],
+      "parameters": {}
+    },
+    {
+      "id": "7a2d2b50-0002-4d5f-8c2b-000000000002",
+      "name": "Tell the team",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [260, 300],
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $env.TELEGRAM_OPS_CHAT_ID }}",
+        "text": "=Falha na triagem (versão n8n)\nNó: {{ $json.execution.lastNodeExecuted }}\nErro: {{ $json.execution.error.message }}\nExecução: {{ $json.execution.id }}",
+        "additionalFields": { "appendAttribution": false }
+      },
+      "credentials": { "telegramApi": { "id": "telegramDemo0001", "name": "Telegram" } }
+    }
+  ],
+  "connections": {
+    "A triage run failed": { "main": [[{ "node": "Tell the team", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "active": false
+}
